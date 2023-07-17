@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Command Console</title>
+    <style>
+        .console-container {
+            width: 100%;
+            height: 400px; /* Set a fixed height */
+            margin: 50px auto;
+            background-color: #000;
+            color: #fff;
+            padding: 20px;
+            font-family: monospace;
+            overflow-y: auto; /* Add vertical scrollbars */
+        }
+
+        .console-input {
+            width: 100%;
+            box-sizing: border-box;
+            background-color: #000;
+            color: #fff;
+            border: none;
+            outline: none;
+            font-family: monospace;
+        }
+
+        .console-output {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body style="background-color:black;">
+    <div class="console-container">
+        <div class="console-output">Welcome to the Command Console!</div>
+        <input type="text" class="console-input" placeholder="Enter a command..." autofocus>
+    </div>
+
+    <script>
+        // Available commands
+        var commands = {
+            help: "List available commands",
+            greet: "Greet the user",
+            date: "Display the current date",
+            clear: "Clear the console",
+            exit: "Exit to desktop",
+            sysinfo: "Gives System Infomation"
+        };
+
+        // DOM elements
+        var consoleContainer = document.querySelector('.console-container');
+        var consoleInput = document.querySelector('.console-input');
+        var consoleOutput = document.querySelector('.console-output');
+
+        // Event listener for enter key press
+        consoleInput.addEventListener('keydown', function(event) {
+            if (event.key === 'Enter') {
+                handleCommand(consoleInput.value);
+                consoleInput.value = '';
+            }
+        });
+
+        // Handle the entered command
+        function handleCommand(command) {
+            var args = command.split(' ');
+            var cmd = args[0].toLowerCase();
+            var output = '';
+
+            switch (cmd) {
+                case 'help':
+                    for (var key in commands) {
+                        output += key + ': ' + commands[key] + '\n';
+                    }
+                    break;
+                case 'greet':
+                    output = 'Hello! How can I assist you?';
+                    break;
+                case 'date':
+                    var currentDate = new Date();
+                    output = 'Current date: ' + currentDate.toDateString();
+                    break;
+                case 'clear':
+                    consoleOutput.textContent = '';
+                    return;
+                case 'exit':
+                    window.location.href = 'desktop.html';
+                    return;
+                case 'sysinfo':
+                    output = 'System Infomation Is Unavalible In Console. On Desktop Click System Infomation Instead!';
+                    break;
+                case 'bios_enter':
+                    window.location.href = 'bios.html';
+                default:
+                    output = 'Command not found. Type "help" to see the list of available commands.';
+            }
+
+            consoleOutput.textContent += '> ' + command + '\n' + output + '\n';
+            consoleContainer.scrollTop = consoleContainer.scrollHeight;
+        }
+    </script>
+</body>
+</html>

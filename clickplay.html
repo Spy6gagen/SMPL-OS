@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ClickPlay - Media Player</title>
+    <style>
+        /* CSS Styles for the media player */
+        .player-container {
+            width: 300px;
+            padding: 20px;
+            background-color: #f0f0f0;
+            text-align: center;
+        }
+
+        .player-controls button {
+            margin: 5px;
+            padding: 8px 12px;
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .player-progress {
+            width: 100%;
+            height: 10px;
+            background-color: #ddd;
+            margin: 10px 0;
+        }
+
+        .player-progress-bar {
+            width: 0%;
+            height: 100%;
+            background-color: #4caf50;
+        }
+    </style>
+    <style>
+        body {
+            background-color: #ADD8E6;
+            color: #000;
+            font-family: Arial, sans-serif;
+        }
+
+        .menu {
+            margin-top: 20px;
+            margin-left: 20px;
+        }
+
+        .menu h3 {
+            margin-top: 0;
+        }
+
+        .menu button {
+            margin-top: 10px;
+        }
+
+        .topnav {
+            overflow: hidden;
+            background-color: #464E6B;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            padding-left: 10px;
+        }
+
+        .topnav a {
+            float: left;
+            color: #f2f2f2;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+            font-size: 17px;
+        }
+
+        .topnav a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+
+        .topnav a.active {
+            background-color: #04AA6D;
+            color: white;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <div class="topnav">
+        <p>Settings  |   </p>
+        <a href="desktop.html">Back to Desktop</a>
+    </div>
+    <div class="player-container">
+        <h2>ClickPlay - Media Player</h2>
+        <div class="player-controls">
+            <button onclick="playPause()">Play/Pause</button>
+            <button onclick="stop()">Stop</button>
+        </div>
+        <div class="player-progress">
+            <div id="progress-bar" class="player-progress-bar"></div>
+        </div>
+        <div>
+            <input id="audio-url-input" type="text" placeholder="Enter audio URL">
+            <button onclick="loadAudio()">Load Audio</button>
+        </div>
+    </div>
+    
+    <h1>Music For You!</h1>
+    <p>Find Music At https://commons.wikimedia.org/wiki/Category:Audio_files</p>
+    <p>Right click on music and copy the audio adress then paste it into URL audio in ClickPlay!</p>
+    <p><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><></p>
+    <p>boot_music.mp3 | Interlite Inc. | Sat, Jul 15 2023</p>
+
+    <script>
+        // Get references to player elements
+        var audioPlayer = new Audio();
+        var progressBar = document.getElementById('progress-bar');
+        var audioUrlInput = document.getElementById('audio-url-input');
+
+        // Function to play or pause the audio
+        function playPause() {
+            if (audioPlayer.paused) {
+                audioPlayer.play();
+            } else {
+                audioPlayer.pause();
+            }
+        }
+
+        // Function to stop the audio
+        function stop() {
+            audioPlayer.pause();
+            audioPlayer.currentTime = 0;
+        }
+
+        // Function to load audio from a URL
+        function loadAudio() {
+            var audioUrl = audioUrlInput.value.trim();
+
+            if (audioUrl) {
+                audioPlayer.src = audioUrl;
+                audioPlayer.load();
+                audioPlayer.play();
+            }
+        }
+
+        // Update progress bar based on audio playback
+        audioPlayer.addEventListener('timeupdate', function() {
+            var progress = (audioPlayer.currentTime / audioPlayer.duration) * 100;
+            progressBar.style.width = progress + '%';
+        });
+    </script>
+</body>
+</html>

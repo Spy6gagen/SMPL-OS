@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SMPL OS - BOOT</title>
+    <style>
+       body {
+            cursor: none;
+        }
+        
+        body {
+            background-color: #000;
+            color: #fff;
+            font-family: Arial, sans-serif;
+        }
+
+        .loading-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            width: 100%;
+        }
+
+        .logo {
+            width: 100px;
+            margin-bottom: 20px;
+        }
+
+        .loading-circle {
+            border: 8px solid #fff;
+            border-top: 8px solid #999;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            aspect-ratio: 1/1;
+            animation: spin 1.5s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            margin-top: 20px;
+            font-size: 20px;
+            text-align: center;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .show {
+            display: block;
+        }
+    </style>
+    <script>
+        function loadComplete() {
+            document.addEventListener('keydown', handleKeyPress);
+            document.getElementById('loading').classList.add('hidden');
+            window.location.href = 'desktop.html'; // Redirect to desktop.html
+        }
+
+        function handleKeyPress(event) {
+            // Check if the pressed key is the 'B' key
+            if (event.key.toLowerCase() === 'b') {
+                window.location.href = 'bios.html';
+            }
+        }
+
+        // Simulating loading completion after 3 seconds
+        setTimeout(loadComplete, 3000);
+    </script>
+</head>
+<body>
+    <!-- Add an audio element to play boot music -->
+
+    <div id="loading" class="loading-container">
+        <div class="loading-circle"></div>
+        <div class="loading-text">
+            <h1>Loading Files...</h1>
+            <h3>We Are Preparing Your Machine</h3>
+        </div>
+    </div>
+</body>
+</html>

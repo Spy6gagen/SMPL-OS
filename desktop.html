@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SMPL OS - Desktop</title>
+    <style>
+        .clock {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        
+        body {
+            background-color: #ADD8E6;
+            background-image: url('background-image.jpg');
+            background-repeat: no-repeat;
+            background-size: cover;
+            color: #000;
+            font-family: Arial, sans-serif;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .topnav {
+            overflow: hidden;
+            background-color: white;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            padding-left: 10px;
+            box-shadow: 0 4px 2px rgba(0, 0, 0, 0.5); /* Add box shadow */
+            animation: fade-in 1s ease-in;
+        }
+        
+        @keyframes fade-in {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+
+        .topnav img {
+            height: 40px;
+            margin-right: 10px;
+        }
+
+        .topnav p {
+            color: #f2f2f2;
+            font-size: 20px;
+            margin-right: 10px;
+        }
+
+        .topnav a {
+            color: black;
+            text-align: center;
+            padding: 10px 16px;
+            text-decoration: none;
+            font-size: 17px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .topnav a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+
+        .topnav a.active {
+            background-color: #04AA6D;
+            color: grey;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        
+        .content-box {
+            border: 2px solid #000;
+            padding: 10px;
+            margin-top: 20px;
+            position: absolute;
+            left: 10px;
+        }
+        
+        .content-box h4 {
+            margin-top: 0;
+        }
+        
+        .content-box button {
+            margin-right: 10px;
+        }
+        
+        .content-box hr.rounded {
+            margin: 20px 0;
+        }
+    </style>
+    <script>
+        // Retrieve the visits value from localStorage
+        var visits = localStorage.getItem('visits');
+
+        // Show the div if visits is 1 (new user)
+        if (parseInt(visits) === 1) {
+            var welcomeDiv = document.getElementById('welcome-div');
+            welcomeDiv.classList.remove('hidden');
+        }
+
+        function menu() {
+            quickmenu = document.getElementById('quick-menu');
+            quickmenu.classList.remove('hidden');
+        }
+
+        function menuclose() {
+            quickmenu = document.getElementById('quick-menu');
+            quickmenu.classList.add('hidden');
+        }
+        
+        function sysinfo() {
+            quickmenu = document.getElementById('sysinfo');
+            quickmenu.classList.remove('hidden');
+        }
+
+        function sysinfoclose() {
+            quickmenu = document.getElementById('sysinfo');
+            quickmenu.classList.add('hidden');
+        }
+        
+        function shutwarn() {
+            shutwarn = document.getElementById('shutwarn');
+            shutwarn.classList.remove('hidden');
+        }
+
+        function shutwarnclose() {
+            shutwarn = document.getElementById('shutwarn');
+            shutwarn.classList.add('hidden');
+        }
+
+        function searchFiles() {
+            var searchTerm = document.getElementById('search-input').value.trim().toLowerCase();
+            var matchingFiles = getMatchingFiles(searchTerm);
+            displayMatchingFiles(matchingFiles);
+        }
+
+        function getMatchingFiles(searchTerm) {
+            var files = [
+                'logo.png',
+                'background-image.jpg',
+                'index.html',
+                'settings.html',
+                'storage.js',
+                'desktop.html',
+                'browser.html',
+                'help.html',
+                'clickplay.html'
+            ];
+
+            var matchingFiles = files.filter(function(file) {
+                return file.toLowerCase().includes(searchTerm);
+            });
+
+            return matchingFiles;
+        }
+
+        function displayMatchingFiles(files) {
+            var desktop = document.getElementById('desktop');
+            desktop.innerHTML = ''; // Clear the desktop
+
+            if (files.length === 0) {
+                desktop.innerHTML = '<p>No matching files found.</p>';
+            } else {
+                var fileList = document.createElement('ul');
+
+                files.forEach(function(file) {
+                    var listItem = document.createElement('li');
+                    listItem.textContent = file;
+                    fileList.appendChild(listItem);
+                });
+
+                desktop.appendChild(fileList);
+            }
+        }
+        
+        function clearSearches() {
+            var desktop = document.getElementById('desktop');
+            desktop.innerHTML = ''; // Clear the desktop
+            document.getElementById('search-input').value = ''; // Clear the search input
+        }
+    </script>
+    <script>
+        function updateClock() {
+            var clockElement = document.getElementById('clock');
+            var currentTime = new Date();
+            var hours = currentTime.getHours().toString().padStart(2, '0');
+            var minutes = currentTime.getMinutes().toString().padStart(2, '0');
+            var seconds = currentTime.getSeconds().toString().padStart(2, '0');
+            var timeString = hours + ':' + minutes + ':' + seconds;
+            clockElement.textContent = timeString;
+        }
+
+        setInterval(updateClock, 1000); // Update every second
+    </script>
+    <script>
+        function updateStatus() {
+            var statusElement = document.getElementById('status');
+
+            if (navigator.onLine) {
+                statusElement.textContent = "You are connected to Wi-Fi.";
+            } else {
+                statusElement.textContent = "You are not connected to Wi-Fi.";
+            }
+        }
+
+        // Update the status initially
+        updateStatus();
+
+        // Add event listener to detect changes in online status
+        window.addEventListener('online', updateStatus);
+        window.addEventListener('offline', updateStatus);
+    </script>
+</head>
+<body>
+    <div class="topnav">
+        <img src="logo.png" width="100">
+        <div id="clock" class="clock"></div>
+        <a onclick="menu()">Quick Menu</a>
+        <a onclick="sysinfo()">System Information</a>
+        <input type="text" id="search-input" placeholder="Find...">
+        <button onclick="searchFiles()">Go</button>
+        <button onclick="clearSearches()">Clear Searches</button>
+        <div id="status"></div>
+    </div>
+        
+    <div id="welcome-div" class="hidden">
+        <h2>Welcome, New User!</h2>
+        <p>Thank you for using SMPL OS! We know you're a nerd, by the way. :) This OS was developed by Interlite Inc. For No Reason at ALL. It's only to work on something to pass the time. We made this thing 3 dollars for a reason. If you have more questions on how to run this OS, click <a href="help.html">this</a> link to read more. We hope you enjoy your eXPerience and maybe even make this your only OS!</p>
+    </div>
+
+    <div id="desktop"></div>
+    
+    <div id="sysinfo" class="hidden">
+        <div class="content-box">
+            <h4>System Information</h4>
+            <button onclick="sysinfoclose()">Close</button>
+            <hr class="rounded">
+            <p>Version Number: 1</p>
+            <p>Other Information Unavailable Due to Security Reasons!</p>
+        </div>
+    </div>
+    
+    <div id="shutwarn" class="hidden">
+        <div class="content-box">
+            <h4>Are you sure?</h4>
+            <hr class="rounded">
+            <p>Are you sure you want to shutdown?</p>
+            <button onclick="shutwarnclose()">No</button>
+            <a href="shutdown.html"><button>Yes</button></a>
+        </div>
+    </div>
+    
+    <!-- Div to be shown on quick menu -->
+    <div id="quick-menu" class="hidden">
+        <div class="content-box">
+            <div id="quick-menu-nav-bar">
+                <h4>Quick Menu Content</h4>
+                <button onclick="menuclose()">Close</button>
+                <button onclick="shutwarn()">Shutdown</button>
+                <a href="index.html"><button>Restart</button></a>
+            </div>
+            <hr class="rounded">
+            <a href="help.html"><button>Documentation</button></a>
+            <a href="settings.html"><button>Settings</button></a>
+            <a href="browser.html"><button>TimeBrowser</button></a>
+            <div>
+                <a href="clickplay.html"><button>ClickPlay</button></a>
+                <a href="texteditor.html"><button>Document Creator</button></a>
+                <a href="shootgame.html"><button>Shooter</button></a>
+            </div>
+            <div>
+                <a href="filemanager.html"><button>File Manager</button></a>
+                <a href="console.html"><button>Console</button></a>
+                <a href="gibsonmail.html"><button>Gibson Mail</button></a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
